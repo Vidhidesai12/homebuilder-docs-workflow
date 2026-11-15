@@ -16,11 +16,14 @@ services:
       - REVIEW_USERNAME=${REVIEW_USERNAME:?Set a local reviewer username}
       - REVIEW_PASSWORD=${REVIEW_PASSWORD:?Set a local reviewer password}
       - REPORT_API_TOKEN=${REPORT_API_TOKEN:?Set a reporting service token}
+      - DOCUMENT_READ_API_TOKEN=${DOCUMENT_READ_API_TOKEN:?Set a document read service token}
     ports:
       - "127.0.0.1:8001:8001"
     networks:
-      - default
-      - project1
+      default: {}
+      project1:
+        aliases:
+          - documents-api
     restart: unless-stopped
   n8n:
     image: docker.n8n.io/n8nio/n8n:2.46.7

@@ -1,0 +1,21 @@
+[
+  {
+    "document_type": "invoice",
+    "document_number": "INV-2026-012",
+    "vendor_name": "Demo Concrete Vendor 03",
+    "document_date": "2026-11-10",
+    "community": "Demo Juniper Vista",
+    "lot_number": "85",
+    "budget_category": "Labor",
+    "line_items": [
+      {
+        "description": "Synthetic material package",
+        "quantity": 2,
+        "unit_price": "14250.00",
+        "amount": "28500.00"
+      }
+    ],
+    "total_amount": "28500.00",
+    "extraction_status": "parsed_not_verified"
+  }
+]

@@ -24,6 +24,13 @@ def previous_completed_week(generated_at: datetime | None = None) -> tuple[datet
     return end - timedelta(days=7), end
 
 
+def current_week_start(as_of: datetime) -> datetime:
+    if as_of.tzinfo is None:
+        raise ValueError("as_of must be timezone-aware")
+    local = as_of.astimezone(REPORT_TZ)
+    return datetime.combine(local.date() - timedelta(days=local.weekday()), time.min, REPORT_TZ)
+
+
 def _money(value: Decimal | str | int | None) -> str:
     return f"{Decimal(value or 0).quantize(Decimal('0.01')):.2f}"
 
@@ -161,6 +168,66 @@ def generate_weekly_report(generated_at: datetime | None = None, connection_fact
     report["markdown"] = render_markdown(report)
     report["html"] = render_html(report)
     return report
+
+
+def generate_operations_summary(as_of: datetime | None = None, connection_factory=connect) -> dict:
+    """Read current-week validation metrics and the current review queue."""
+    generated = (as_of or datetime.now(UTC)).astimezone(UTC)
+    start = current_week_start(generated)
+    start_utc = start.astimezone(UTC)
+    with connection_factory() as conn, conn.cursor() as cur:
+        cur.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY")
+        cur.execute("SET LOCAL statement_timeout = '10000ms'")
+        data = _query_data(cur, start_utc, generated)
+        cur.execute(
+            "SELECT coalesce(community, 'Unassigned') AS community, count(*) AS count "
+            "FROM documents.records WHERE created_at >= %s AND created_at < %s "
+            "AND document_type='invoice' AND outcome IN ('needs_review', 'rejected_invalid') "
+            "GROUP BY coalesce(community, 'Unassigned') ORDER BY count(*) DESC, community",
+            (start_utc, generated),
+        )
+        exceptions = [{"community": row["community"], "count": int(row["count"])} for row in cur.fetchall()]
+        # Resolve the stored exact community name to the catalog's verified ID.
+        # Unknown names remain unmatched and are never assigned approximately.
+        cur.execute(
+            "SELECT c.id AS community_id, c.name AS community, count(*) AS count "
+            "FROM documents.records r JOIN public.communities c ON c.name = r.community "
+            "WHERE r.created_at >= %s AND r.created_at < %s AND r.document_type='invoice' "
+            "AND r.outcome='needs_review' GROUP BY c.id, c.name ORDER BY c.id",
+            (start_utc, generated),
+        )
+        community_counts = [{"community_id": row["community_id"], "community": row["community"],
+                             "needs_review_invoices": int(row["count"]), "common_exception_reasons": []}
+                            for row in cur.fetchall()]
+        cur.execute(
+            "SELECT c.id AS community_id, reason->>'code' AS reason, count(DISTINCT r.id) AS count "
+            "FROM documents.records r JOIN public.communities c ON c.name = r.community "
+            "CROSS JOIN LATERAL jsonb_array_elements(coalesce(r.reasons,'[]'::jsonb)) reason "
+            "WHERE r.created_at >= %s AND r.created_at < %s AND r.document_type='invoice' "
+            "AND r.outcome='needs_review' GROUP BY c.id, reason->>'code' "
+            "ORDER BY c.id, count(DISTINCT r.id) DESC, reason->>'code'",
+            (start_utc, generated),
+        )
+        reasons_by_id = {row["community_id"]: row["common_exception_reasons"] for row in community_counts}
+        for row in cur.fetchall():
+            reasons_by_id[row["community_id"]].append({"reason": row["reason"], "count": int(row["count"])})
+        cur.execute(
+            "SELECT count(*) AS count FROM documents.records r "
+            "LEFT JOIN public.communities c ON c.name = r.community "
+            "WHERE r.created_at >= %s AND r.created_at < %s AND r.document_type='invoice' "
+            "AND r.outcome='needs_review' AND c.id IS NULL",
+            (start_utc, generated),
+        )
+        unmatched = int(cur.fetchone()["count"])
+    return {
+        "report_timezone": "America/Los_Angeles",
+        "period": {"start_inclusive": start.isoformat(), "end_exclusive": generated.isoformat()},
+        "as_of": generated.isoformat(),
+        **data,
+        "invoice_exceptions_by_community": exceptions,
+        "needs_review_invoices_by_community": community_counts,
+        "unmatched_needs_review_invoices": unmatched,
+    }
 
 
 def _table(rows: list[dict], columns: list[tuple[str, str]]) -> str:

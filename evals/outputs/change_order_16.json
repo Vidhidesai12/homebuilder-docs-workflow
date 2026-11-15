@@ -1,0 +1,27 @@
+[
+  {
+    "document_type": "change_order",
+    "document_number": "CO-2026-001",
+    "vendor_name": "Demo Sitework Vendor 04",
+    "document_date": "2026-11-10",
+    "community": "Demo Willow Crossing",
+    "lot_number": "113",
+    "budget_category": "Labor",
+    "line_items": [
+      {
+        "description": "Labor demo work item 1",
+        "quantity": 2,
+        "unit_price": "892.00",
+        "amount": "1784.00"
+      },
+      {
+        "description": "Labor demo work item 2",
+        "quantity": 1,
+        "unit_price": "776.00",
+        "amount": "776.00"
+      }
+    ],
+    "total_amount": "2560.00",
+    "extraction_status": "parsed_not_verified"
+  }
+]

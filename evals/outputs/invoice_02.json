@@ -1,0 +1,27 @@
+[
+  {
+    "document_type": "invoice",
+    "document_number": "INV-2026-002",
+    "vendor_name": "Demo Concrete Vendor 01",
+    "document_date": "2026-11-10",
+    "community": "Demo Birch Landing",
+    "lot_number": "15",
+    "budget_category": "Sitework",
+    "line_items": [
+      {
+        "description": "Sitework demo work item 1",
+        "quantity": 2,
+        "unit_price": "585.00",
+        "amount": "1170.00"
+      },
+      {
+        "description": "Sitework demo work item 2",
+        "quantity": 1,
+        "unit_price": "1685.00",
+        "amount": "1685.00"
+      }
+    ],
+    "total_amount": "2855.00",
+    "extraction_status": "parsed_not_verified"
+  }
+]

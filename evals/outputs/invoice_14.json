@@ -1,0 +1,27 @@
+[
+  {
+    "document_type": "invoice",
+    "document_number": "INV-2026-003",
+    "vendor_name": "Demo Framing Vendor 01",
+    "document_date": "2026-11-10",
+    "community": "Demo Oakline Park",
+    "lot_number": "99",
+    "budget_category": "Sitework",
+    "line_items": [
+      {
+        "description": "Sitework demo work item 1",
+        "quantity": 3,
+        "unit_price": "1587.00",
+        "amount": "4761.00"
+      },
+      {
+        "description": "Sitework demo work item 2",
+        "quantity": 3,
+        "unit_price": "1482.00",
+        "amount": "4446.00"
+      }
+    ],
+    "total_amount": "9207.00",
+    "extraction_status": "parsed_not_verified"
+  }
+]

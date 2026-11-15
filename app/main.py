@@ -4,14 +4,15 @@ from __future__ import annotations
 from datetime import datetime
 from decimal import Decimal
 
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, Query
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from app.storage import IdempotencyConflict, validate_and_store
 from app.review_auth import create_session, end_session, require_reviewer
 from app.review_store import ReviewConflict, ReviewNotFound, decide, get_document, get_history, list_pending
-from app.report_auth import require_report_service
-from app.reporting import generate_weekly_report, record_report_run
+from app.report_auth import require_document_reader, require_report_service
+from app.reporting import generate_operations_summary, generate_weekly_report, record_report_run
+from app.pending_reporting import InvalidPendingCursor, list_pending_summaries
 
 app = FastAPI(title="Homebuilder document validation and review", version="0.4.0")
 
@@ -130,6 +131,24 @@ def weekly_report(as_of: datetime | None = None, _: str = Depends(require_report
     if as_of is not None and as_of.tzinfo is None:
         raise HTTPException(status_code=422, detail="as_of must be timezone-aware")
     return generate_weekly_report(as_of)
+
+
+@app.get("/v1/reports/operations")
+def operations_summary(_: str = Depends(require_document_reader)):
+    return generate_operations_summary()
+
+
+@app.get("/v1/reports/pending-invoices")
+def pending_invoice_summaries(
+    page_size: int = Query(default=25, ge=1, le=50),
+    search: str = Query(default="", max_length=100),
+    cursor: str | None = Query(default=None, max_length=1024),
+    _: str = Depends(require_document_reader),
+):
+    try:
+        return list_pending_summaries(page_size=page_size, search=search, cursor=cursor)
+    except InvalidPendingCursor as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 
 @app.post("/v1/reports/weekly/runs")
