@@ -15,3 +15,14 @@ The system automatically extracts structured information from construction invoi
 All business records are fictional. Validation acceptance and human exception approval do not authorize payment.
 
 **Technologies:** Python · Google Gemini · n8n · FastAPI · PostgreSQL · Pydantic · Streamlit · Docker · pytest
+
+## Project Demonstration
+
+### 1. AI Invoice Processing
+![n8n Workflow](docs/images/n8n_invoice_workflow.png)
+
+### 2. Human-in-the-Loop Review
+![Human Review Dashboard](docs/images/human_review_dashboard.png)
+
+### 3. Automated Weekly Reporting
+![Weekly Report](docs/images/weekly_report_actual.png)
