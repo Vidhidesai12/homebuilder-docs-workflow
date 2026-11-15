@@ -1,0 +1,16 @@
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+.test_tmp/
+.coverage
+htmlcov/
+*.pyc
+.n8n/
+*.sqlite
+*.sqlite3
+*.db
+.streamlit/secrets.toml

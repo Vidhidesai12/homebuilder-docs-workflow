@@ -1,0 +1,27 @@
+{
+  "filename": "invoice_03.pdf",
+  "document_type": "invoice",
+  "document_number": "INV-2026-003",
+  "vendor_name": "Demo Framing Vendor 01",
+  "issue_date": "2026-11-10",
+  "community": "Demo Cedar Hollow",
+  "lot_number": 22,
+  "budget_category": "Materials",
+  "line_items": [
+    {
+      "description": "Materials demo work item 1",
+      "quantity": 1,
+      "unit_price": "1509.00",
+      "amount": "1509.00"
+    },
+    {
+      "description": "Materials demo work item 2",
+      "quantity": 4,
+      "unit_price": "365.00",
+      "amount": "1460.00"
+    }
+  ],
+  "total_amount": "2969.00",
+  "expected_validation_status": "valid",
+  "expected_exception_reasons": []
+}

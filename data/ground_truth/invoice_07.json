@@ -1,0 +1,27 @@
+{
+  "filename": "invoice_07.pdf",
+  "document_type": "invoice",
+  "document_number": "INV-2026-007",
+  "vendor_name": "Demo Concrete Vendor 02",
+  "issue_date": "2026-11-10",
+  "community": "Demo Pinecrest Haven",
+  "lot_number": 50,
+  "budget_category": "Materials",
+  "line_items": [
+    {
+      "description": "Materials demo work item 1",
+      "quantity": 3,
+      "unit_price": "313.00",
+      "amount": "939.00"
+    },
+    {
+      "description": "Materials demo work item 2",
+      "quantity": 2,
+      "unit_price": "1729.00",
+      "amount": "3458.00"
+    }
+  ],
+  "total_amount": "4397.00",
+  "expected_validation_status": "valid",
+  "expected_exception_reasons": []
+}

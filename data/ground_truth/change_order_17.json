@@ -1,0 +1,27 @@
+{
+  "filename": "change_order_17.pdf",
+  "document_type": "change_order",
+  "document_number": "CO-2026-002",
+  "vendor_name": "Demo Concrete Vendor 04",
+  "issue_date": "2026-11-10",
+  "community": "Demo Alder Grove",
+  "lot_number": 120,
+  "budget_category": "Permits",
+  "line_items": [
+    {
+      "description": "Permits demo work item 1",
+      "quantity": 1,
+      "unit_price": "1078.00",
+      "amount": "1078.00"
+    },
+    {
+      "description": "Permits demo work item 2",
+      "quantity": 3,
+      "unit_price": "1228.00",
+      "amount": "3684.00"
+    }
+  ],
+  "total_amount": "4762.00",
+  "expected_validation_status": "valid",
+  "expected_exception_reasons": []
+}

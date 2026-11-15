@@ -1,0 +1,27 @@
+{
+  "filename": "invoice_11.pdf",
+  "document_type": "invoice",
+  "document_number": "INV-2026-011",
+  "vendor_name": "Demo Sitework Vendor 03",
+  "issue_date": "2026-11-10",
+  "community": "Demo Cedar Hollow",
+  "lot_number": 78,
+  "budget_category": "Materials",
+  "line_items": [
+    {
+      "description": "Materials demo work item 1",
+      "quantity": 3,
+      "unit_price": "388.00",
+      "amount": "1164.00"
+    },
+    {
+      "description": "Materials demo work item 2",
+      "quantity": 4,
+      "unit_price": "1398.00",
+      "amount": "5592.00"
+    }
+  ],
+  "total_amount": "6756.00",
+  "expected_validation_status": "valid",
+  "expected_exception_reasons": []
+}

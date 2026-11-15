@@ -1,0 +1,51 @@
+{
+  "document_count": 1,
+  "scored_document_count": 1,
+  "field_accuracy": {
+    "matched": 16,
+    "total": 16,
+    "rate": 1.0
+  },
+  "exact_document_accuracy": {
+    "matched": 1,
+    "total": 1,
+    "rate": 1.0
+  },
+  "documents": [
+    {
+      "output_file": "evals/outputs/invoice_01.json",
+      "source_filename": "invoice_01.pdf",
+      "ground_truth_file": "data/ground_truth/invoice_01.json",
+      "document_identity": "INV-2026-001",
+      "schema_valid": true,
+      "validation_errors": [],
+      "matched_fields": [
+        "document_type",
+        "document_number",
+        "vendor_name",
+        "issue_date",
+        "community",
+        "lot_number",
+        "budget_category",
+        "total_amount",
+        "line_items[0].description",
+        "line_items[0].quantity",
+        "line_items[0].unit_price",
+        "line_items[0].amount",
+        "line_items[1].description",
+        "line_items[1].quantity",
+        "line_items[1].unit_price",
+        "line_items[1].amount"
+      ],
+      "missing_fields": [],
+      "incorrect_fields": [],
+      "unexpected_fields": [],
+      "field_accuracy": {
+        "matched": 16,
+        "total": 16,
+        "rate": 1.0
+      },
+      "exact_document_accuracy": true
+    }
+  ]
+}

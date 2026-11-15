@@ -1,0 +1,27 @@
+{
+  "filename": "invoice_06.pdf",
+  "document_type": "invoice",
+  "document_number": "INV-2026-006",
+  "vendor_name": "Demo Sitework Vendor 02",
+  "issue_date": "2026-11-10",
+  "community": "Demo Oakline Park",
+  "lot_number": 43,
+  "budget_category": "Sitework",
+  "line_items": [
+    {
+      "description": "Sitework demo work item 1",
+      "quantity": 4,
+      "unit_price": "751.00",
+      "amount": "3004.00"
+    },
+    {
+      "description": "Sitework demo work item 2",
+      "quantity": 4,
+      "unit_price": "1506.00",
+      "amount": "6024.00"
+    }
+  ],
+  "total_amount": "9028.00",
+  "expected_validation_status": "valid",
+  "expected_exception_reasons": []
+}

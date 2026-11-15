@@ -1,0 +1,27 @@
+{
+  "filename": "change_order_20.pdf",
+  "document_type": "change_order",
+  "document_number": "CO-2026-005",
+  "vendor_name": "Demo Inspection Vendor 04",
+  "issue_date": "2026-11-10",
+  "community": "Demo Juniper Vista",
+  "lot_number": 141,
+  "budget_category": "Labor",
+  "line_items": [
+    {
+      "description": "Labor demo work item 1",
+      "quantity": 1,
+      "unit_price": "1547.00",
+      "amount": "1547.00"
+    },
+    {
+      "description": "Labor demo work item 2",
+      "quantity": 2,
+      "unit_price": "1393.00",
+      "amount": "2786.00"
+    }
+  ],
+  "total_amount": "4333.00",
+  "expected_validation_status": "valid",
+  "expected_exception_reasons": []
+}

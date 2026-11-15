@@ -1,0 +1,27 @@
+{
+  "filename": "invoice_05.pdf",
+  "document_type": "invoice",
+  "document_number": "INV-2026-005",
+  "vendor_name": "Demo Inspection Vendor 01",
+  "issue_date": "2026-11-10",
+  "community": "Demo Maple Terrace",
+  "lot_number": 36,
+  "budget_category": "Permits",
+  "line_items": [
+    {
+      "description": "Permits demo work item 1",
+      "quantity": 1,
+      "unit_price": "1449.00",
+      "amount": "1449.00"
+    },
+    {
+      "description": "Permits demo work item 2",
+      "quantity": 2,
+      "unit_price": "1766.00",
+      "amount": "3532.00"
+    }
+  ],
+  "total_amount": "4981.00",
+  "expected_validation_status": "valid",
+  "expected_exception_reasons": []
+}

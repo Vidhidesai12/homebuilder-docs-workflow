@@ -1,0 +1,52 @@
+{
+  "name": "Stage 1 - PDF text ingestion",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Homebuilder document intake",
+        "formDescription": "Upload one synthetic PDF to inspect its extracted text.",
+        "formFields": {"values": [{"fieldLabel": "document", "fieldType": "file", "requiredField": true, "multipleFiles": false, "acceptFileTypes": ".pdf"}]},
+        "options": {}
+      },
+      "id": "3a57bffa-2249-4f0f-b00a-cbf7c6354a91",
+      "name": "PDF upload form",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "homebuilder-stage1-pdf"
+    },
+    {
+      "parameters": {"operation": "pdf", "binaryPropertyName": "document", "options": {}},
+      "id": "cc879f1a-44bd-4bb1-9c79-728df38206d6",
+      "name": "Extract PDF text",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "mode": "manual",
+        "duplicateItem": false,
+        "assignments": {"assignments": [
+          {"id": "c938ee85-e326-4bc9-89c6-561459874f11", "name": "filename", "value": "={{ $('PDF upload form').item.binary.document.fileName }}", "type": "string"},
+          {"id": "810f380e-6b7f-48bb-b339-9b1205f95258", "name": "mime_type", "value": "={{ $('PDF upload form').item.binary.document.mimeType }}", "type": "string"},
+          {"id": "4f10f6f2-eef2-4c5c-ad55-01598590b394", "name": "extracted_text", "value": "={{ $json.text }}", "type": "string"},
+          {"id": "72b734c5-51b2-4ce0-bfe5-d1952e418a5f", "name": "page_count", "value": "={{ $json.numpages }}", "type": "number"}
+        ]},
+        "options": {}
+      },
+      "id": "8577045a-c30f-42f1-9aee-e09fa26d44da",
+      "name": "Show text and metadata",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [680, 300]
+    }
+  ],
+  "connections": {
+    "PDF upload form": {"main": [[{"node": "Extract PDF text", "type": "main", "index": 0}]]},
+    "Extract PDF text": {"main": [[{"node": "Show text and metadata", "type": "main", "index": 0}]]}
+  },
+  "active": false,
+  "settings": {"executionOrder": "v1"},
+  "pinData": {}
+}

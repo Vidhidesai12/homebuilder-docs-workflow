@@ -1,0 +1,27 @@
+{
+  "filename": "invoice_09.pdf",
+  "document_type": "invoice",
+  "document_number": "INV-2026-009",
+  "vendor_name": "Demo Mechanical Vendor 02",
+  "issue_date": "2026-11-10",
+  "community": "Demo Alder Grove",
+  "lot_number": 64,
+  "budget_category": "Permits",
+  "line_items": [
+    {
+      "description": "Permits demo work item 1",
+      "quantity": 2,
+      "unit_price": "989.00",
+      "amount": "1978.00"
+    },
+    {
+      "description": "Permits demo work item 2",
+      "quantity": 1,
+      "unit_price": "489.00",
+      "amount": "489.00"
+    }
+  ],
+  "total_amount": "2467.00",
+  "expected_validation_status": "valid",
+  "expected_exception_reasons": []
+}

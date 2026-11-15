@@ -1,0 +1,27 @@
+{
+  "filename": "invoice_10.pdf",
+  "document_type": "invoice",
+  "document_number": "INV-2026-010",
+  "vendor_name": "Demo Inspection Vendor 02",
+  "issue_date": "2026-11-10",
+  "community": "Demo Birch Landing",
+  "lot_number": 71,
+  "budget_category": "Sitework",
+  "line_items": [
+    {
+      "description": "Sitework demo work item 1",
+      "quantity": 4,
+      "unit_price": "498.00",
+      "amount": "1992.00"
+    },
+    {
+      "description": "Sitework demo work item 2",
+      "quantity": 3,
+      "unit_price": "1004.00",
+      "amount": "3012.00"
+    }
+  ],
+  "total_amount": "5004.00",
+  "expected_validation_status": "valid",
+  "expected_exception_reasons": []
+}

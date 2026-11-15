@@ -1,0 +1,19 @@
+-- psql-only bootstrap. Run as an admin with: psql ... -v docs_password='YOUR_SECRET' -f docs/documents_role.psql
+-- Password is supplied externally and never stored in this repository.
+\if :{?docs_password}
+\else
+\echo 'Set -v docs_password before running this script.'
+\quit 1
+\endif
+
+SELECT format('CREATE ROLE homebuilder_docs LOGIN PASSWORD %L', :'docs_password')
+WHERE NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'homebuilder_docs') \gexec
+ALTER ROLE homebuilder_docs PASSWORD :'docs_password';
+ALTER ROLE homebuilder_docs NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION;
+REVOKE ALL ON SCHEMA public FROM homebuilder_docs;
+GRANT USAGE ON SCHEMA public TO homebuilder_docs;
+GRANT SELECT ON public.vendors, public.communities, public.lots, public.budgets TO homebuilder_docs;
+GRANT USAGE ON SCHEMA documents TO homebuilder_docs;
+GRANT SELECT, INSERT, UPDATE ON documents.records TO homebuilder_docs;
+GRANT SELECT, INSERT ON documents.invoice_claims, documents.audit_history TO homebuilder_docs;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA documents TO homebuilder_docs;

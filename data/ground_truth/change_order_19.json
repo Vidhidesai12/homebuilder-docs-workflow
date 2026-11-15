@@ -1,0 +1,29 @@
+{
+  "filename": "change_order_19.pdf",
+  "document_type": "change_order",
+  "document_number": "CO-2026-004",
+  "vendor_name": "Demo Unknown Trade Vendor 99",
+  "issue_date": "2026-11-10",
+  "community": "Demo Cedar Hollow",
+  "lot_number": 134,
+  "budget_category": "Materials",
+  "line_items": [
+    {
+      "description": "Materials demo work item 1",
+      "quantity": 2,
+      "unit_price": "1672.00",
+      "amount": "3344.00"
+    },
+    {
+      "description": "Materials demo work item 2",
+      "quantity": 3,
+      "unit_price": "1737.00",
+      "amount": "5211.00"
+    }
+  ],
+  "total_amount": "8555.00",
+  "expected_validation_status": "exception",
+  "expected_exception_reasons": [
+    "unknown_vendor"
+  ]
+}

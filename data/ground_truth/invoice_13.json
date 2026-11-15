@@ -1,0 +1,27 @@
+{
+  "filename": "invoice_13.pdf",
+  "document_type": "invoice",
+  "document_number": "INV-2026-013",
+  "vendor_name": "Demo Framing Vendor 03",
+  "issue_date": "2026-11-10",
+  "community": "Demo Maple Terrace",
+  "lot_number": 92,
+  "budget_category": "Permits",
+  "line_items": [
+    {
+      "description": "Permits demo work item 1",
+      "quantity": 1,
+      "unit_price": "1075.00",
+      "amount": "1075.00"
+    },
+    {
+      "description": "Permits demo work item 2",
+      "quantity": 1,
+      "unit_price": "1430.00",
+      "amount": "1430.00"
+    }
+  ],
+  "total_amount": "2505.00",
+  "expected_validation_status": "valid",
+  "expected_exception_reasons": []
+}

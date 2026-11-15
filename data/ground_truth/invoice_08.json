@@ -1,0 +1,27 @@
+{
+  "filename": "invoice_08.pdf",
+  "document_type": "invoice",
+  "document_number": "INV-2026-008",
+  "vendor_name": "Demo Framing Vendor 02",
+  "issue_date": "2026-11-10",
+  "community": "Demo Willow Crossing",
+  "lot_number": 57,
+  "budget_category": "Labor",
+  "line_items": [
+    {
+      "description": "Labor demo work item 1",
+      "quantity": 4,
+      "unit_price": "996.00",
+      "amount": "3984.00"
+    },
+    {
+      "description": "Labor demo work item 2",
+      "quantity": 3,
+      "unit_price": "618.00",
+      "amount": "1854.00"
+    }
+  ],
+  "total_amount": "5838.00",
+  "expected_validation_status": "valid",
+  "expected_exception_reasons": []
+}

@@ -1,0 +1,47 @@
+services:
+  review-ui:
+    build: .
+    command: ["streamlit", "run", "app/review_dashboard.py", "--server.address=0.0.0.0", "--server.port=8502", "--browser.gatherUsageStats=false"]
+    environment:
+      - REVIEW_API_URL=http://api:8001
+    ports:
+      - "127.0.0.1:8502:8502"
+    depends_on:
+      - api
+    restart: unless-stopped
+  api:
+    build: .
+    environment:
+      - DOCUMENTS_DATABASE_URL=${DOCUMENTS_DATABASE_URL_DOCKER:?Set the limited-role database URL}
+      - REVIEW_USERNAME=${REVIEW_USERNAME:?Set a local reviewer username}
+      - REVIEW_PASSWORD=${REVIEW_PASSWORD:?Set a local reviewer password}
+      - REPORT_API_TOKEN=${REPORT_API_TOKEN:?Set a reporting service token}
+    ports:
+      - "127.0.0.1:8001:8001"
+    networks:
+      - default
+      - project1
+    restart: unless-stopped
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:2.46.7
+    ports:
+      - "127.0.0.1:5678:5678"
+    environment:
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - WEBHOOK_URL=http://localhost:5678/
+      - GENERIC_TIMEZONE=America/Los_Angeles
+      - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
+      - N8N_DIAGNOSTICS_ENABLED=false
+    volumes:
+      - n8n_data:/home/node/.n8n
+    restart: unless-stopped
+
+volumes:
+  n8n_data:
+
+networks:
+  project1:
+    external: true
+    name: homebuilder-ops-copilot_default

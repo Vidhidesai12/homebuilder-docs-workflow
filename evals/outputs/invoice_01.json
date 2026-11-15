@@ -1,0 +1,27 @@
+[
+  {
+    "document_type": "invoice",
+    "document_number": "INV-2026-001",
+    "vendor_name": "Demo Sitework Vendor 01",
+    "document_date": "2026-11-10",
+    "community": "Demo Alder Grove",
+    "lot_number": "8",
+    "budget_category": "Permits",
+    "line_items": [
+      {
+        "description": "Permits demo work item 1",
+        "quantity": 1,
+        "unit_price": "351.00",
+        "amount": "351.00"
+      },
+      {
+        "description": "Permits demo work item 2",
+        "quantity": 3,
+        "unit_price": "801.00",
+        "amount": "2403.00"
+      }
+    ],
+    "total_amount": "2754.00",
+    "extraction_status": "parsed_not_verified"
+  }
+]

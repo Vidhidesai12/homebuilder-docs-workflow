@@ -1,0 +1,288 @@
+{
+    "updatedAt":  "2026-11-14T18:25:02.000Z",
+    "createdAt":  "2026-11-14T18:24:50.455Z",
+    "id":  "hZRCAnXj5gSvFD9L",
+    "name":  "Stage 4B - Weekly document reporting",
+    "description":  null,
+    "active":  true,
+    "isArchived":  false,
+    "nodes":  [
+                  {
+                      "id":  "28cf2211-29f0-4f28-a305-e27e7e3c407d",
+                      "name":  "Every Monday 9 AM",
+                      "type":  "n8n-nodes-base.scheduleTrigger",
+                      "typeVersion":  1.2,
+                      "position":  [
+                                       220,
+                                       180
+                                   ],
+                      "parameters":  {
+                                         "rule":  {
+                                                      "interval":  [
+                                                                       {
+                                                                           "field":  "weeks",
+                                                                           "triggerAtDay":  [
+                                                                                                1
+                                                                                            ],
+                                                                           "triggerAtHour":  9,
+                                                                           "triggerAtMinute":  0
+                                                                       }
+                                                                   ]
+                                                  }
+                                     }
+                  },
+                  {
+                      "id":  "31c371b9-d5fb-4185-b5c0-1602305b9b51",
+                      "name":  "Run now",
+                      "type":  "n8n-nodes-base.manualTrigger",
+                      "typeVersion":  1,
+                      "position":  [
+                                       220,
+                                       360
+                                   ],
+                      "parameters":  {
+
+                                     }
+                  },
+                  {
+                      "id":  "3af8d3e5-18e7-4704-b90a-b21bfd08af9d",
+                      "name":  "Local manual test webhook",
+                      "type":  "n8n-nodes-base.webhook",
+                      "typeVersion":  2,
+                      "position":  [
+                                       220,
+                                       540
+                                   ],
+                      "webhookId":  "stage4b-weekly-report",
+                      "parameters":  {
+                                         "httpMethod":  "POST",
+                                         "path":  "stage4b-weekly-report",
+                                         "responseMode":  "lastNode",
+                                         "options":  {
+
+                                                     }
+                                     }
+                  },
+                  {
+                      "id":  "4b20b248-bb80-4642-981d-12ec37e81c50",
+                      "name":  "Request weekly report",
+                      "type":  "n8n-nodes-base.httpRequest",
+                      "typeVersion":  4.2,
+                      "position":  [
+                                       490,
+                                       360
+                                   ],
+                      "parameters":  {
+                                         "method":  "GET",
+                                         "url":  "http://host.docker.internal:8001/v1/reports/weekly",
+                                         "authentication":  "genericCredentialType",
+                                         "genericAuthType":  "httpHeaderAuth",
+                                         "options":  {
+                                                         "timeout":  15000,
+                                                         "response":  {
+                                                                          "response":  {
+                                                                                           "responseFormat":  "json"
+                                                                                       }
+                                                                      }
+                                                     }
+                                     },
+                      "credentials":  {
+                                          "httpHeaderAuth":  {
+                                                                 "id":  "stage4b-reporting-api",
+                                                                 "name":  "Stage 4B Reporting API"
+                                                             }
+                                      },
+                      "retryOnFail":  true,
+                      "maxTries":  3,
+                      "waitBetweenTries":  2000
+                  },
+                  {
+                      "id":  "71fe70e4-5d75-4b93-b3d2-f8eea3c802fa",
+                      "name":  "Format weekly report",
+                      "type":  "n8n-nodes-base.code",
+                      "typeVersion":  2,
+                      "position":  [
+                                       730,
+                                       360
+                                   ],
+                      "parameters":  {
+                                         "jsCode":  "\nconst report = $input.first().json;\nif (!report.period?.start_utc || !report.period?.end_utc || !report.report_digest) {\n  throw new Error(\u0027Reporting API returned an incomplete report\u0027);\n}\nreturn [{json: {\n  report_json: report,\n  markdown_report: report.markdown,\n  html_report: report.html,\n  summary: {\n    period: report.period,\n    generated_at: report.generated_at,\n    unique_documents: report.document_volume.unique_documents,\n    accepted: report.validation_outcomes.accepted,\n    needs_review: report.validation_outcomes.needs_review,\n    rejected_invalid: report.validation_outcomes.rejected_invalid,\n    pending_reviews_as_of_generation: report.pending_human_reviews_as_of_generation,\n    total_valid_invoice_value: report.total_valid_invoice_value,\n    payment_authorized: false\n  },\n  receipt: {\n    idempotency_key: `weekly:${report.period.start_utc}:${report.period.end_utc}`,\n    period_start: report.period.start_utc,\n    period_end: report.period.end_utc,\n    report_digest: report.report_digest,\n    generated_at: report.generated_at,\n    source: \u0027n8n\u0027\n  }\n}}];\n"
+                                     }
+                  },
+                  {
+                      "id":  "412d071a-f6b1-4750-bd12-c98485487065",
+                      "name":  "Display generated report",
+                      "type":  "n8n-nodes-base.code",
+                      "typeVersion":  2,
+                      "position":  [
+                                       960,
+                                       360
+                                   ],
+                      "parameters":  {
+                                         "jsCode":  "return $input.all();"
+                                     }
+                  },
+                  {
+                      "id":  "7304a605-5b47-48b4-aa8d-c9a659461868",
+                      "name":  "Record successful generation",
+                      "type":  "n8n-nodes-base.httpRequest",
+                      "typeVersion":  4.2,
+                      "position":  [
+                                       1190,
+                                       360
+                                   ],
+                      "parameters":  {
+                                         "method":  "POST",
+                                         "url":  "http://host.docker.internal:8001/v1/reports/weekly/runs",
+                                         "authentication":  "genericCredentialType",
+                                         "genericAuthType":  "httpHeaderAuth",
+                                         "sendBody":  true,
+                                         "contentType":  "json",
+                                         "specifyBody":  "json",
+                                         "jsonBody":  "={{ JSON.stringify($json.receipt) }}",
+                                         "options":  {
+                                                         "timeout":  15000,
+                                                         "response":  {
+                                                                          "response":  {
+                                                                                           "responseFormat":  "json"
+                                                                                       }
+                                                                      }
+                                                     }
+                                     },
+                      "credentials":  {
+                                          "httpHeaderAuth":  {
+                                                                 "id":  "stage4b-reporting-api",
+                                                                 "name":  "Stage 4B Reporting API"
+                                                             }
+                                      },
+                      "retryOnFail":  true,
+                      "maxTries":  3,
+                      "waitBetweenTries":  2000
+                  },
+                  {
+                      "id":  "4f62bf7b-b524-4a73-a17f-7baa943c660f",
+                      "name":  "Report generation complete",
+                      "type":  "n8n-nodes-base.code",
+                      "typeVersion":  2,
+                      "position":  [
+                                       1420,
+                                       360
+                                   ],
+                      "parameters":  {
+                                         "jsCode":  "\nconst receipt = $input.first().json;\nconst formatted = $(\u0027Format weekly report\u0027).first().json;\nreturn [{json: {\n  status: \u0027report_generated\u0027,\n  report_run_id: receipt.report_run_id,\n  report_record_created: receipt.created,\n  report_digest_matches_existing: receipt.report_digest_matches ?? true,\n  summary: formatted.summary,\n  markdown_report: formatted.markdown_report,\n  html_report: formatted.html_report,\n  payment_authorized: false\n}}];\n"
+                                     }
+                  }
+              ],
+    "connections":  {
+                        "Every Monday 9 AM":  {
+                                                  "main":  [
+                                                               [
+                                                                   {
+                                                                       "node":  "Request weekly report",
+                                                                       "type":  "main",
+                                                                       "index":  0
+                                                                   }
+                                                               ]
+                                                           ]
+                                              },
+                        "Run now":  {
+                                        "main":  [
+                                                     [
+                                                         {
+                                                             "node":  "Request weekly report",
+                                                             "type":  "main",
+                                                             "index":  0
+                                                         }
+                                                     ]
+                                                 ]
+                                    },
+                        "Local manual test webhook":  {
+                                                          "main":  [
+                                                                       [
+                                                                           {
+                                                                               "node":  "Request weekly report",
+                                                                               "type":  "main",
+                                                                               "index":  0
+                                                                           }
+                                                                       ]
+                                                                   ]
+                                                      },
+                        "Request weekly report":  {
+                                                      "main":  [
+                                                                   [
+                                                                       {
+                                                                           "node":  "Format weekly report",
+                                                                           "type":  "main",
+                                                                           "index":  0
+                                                                       }
+                                                                   ]
+                                                               ]
+                                                  },
+                        "Format weekly report":  {
+                                                     "main":  [
+                                                                  [
+                                                                      {
+                                                                          "node":  "Display generated report",
+                                                                          "type":  "main",
+                                                                          "index":  0
+                                                                      }
+                                                                  ]
+                                                              ]
+                                                 },
+                        "Display generated report":  {
+                                                         "main":  [
+                                                                      [
+                                                                          {
+                                                                              "node":  "Record successful generation",
+                                                                              "type":  "main",
+                                                                              "index":  0
+                                                                          }
+                                                                      ]
+                                                                  ]
+                                                     },
+                        "Record successful generation":  {
+                                                             "main":  [
+                                                                          [
+                                                                              {
+                                                                                  "node":  "Report generation complete",
+                                                                                  "type":  "main",
+                                                                                  "index":  0
+                                                                              }
+                                                                          ]
+                                                                      ]
+                                                         }
+                    },
+    "settings":  {
+                     "executionOrder":  "v1",
+                     "timezone":  "America/Los_Angeles"
+                 },
+    "staticData":  {
+                       "node:Every Monday 9 AM":  {
+                                                      "recurrenceRules":  [
+                                                                              null
+                                                                          ],
+                                                      "recurrenceRuleSignatures":  [
+                                                                                       null
+                                                                                   ]
+                                                  }
+                   },
+    "meta":  null,
+    "nodeGroups":  [
+
+                   ],
+    "pinData":  {
+
+                },
+    "versionId":  "dcd97edf-0e99-47f9-92e5-4cdab371f9ad",
+    "activeVersionId":  "dcd97edf-0e99-47f9-92e5-4cdab371f9ad",
+    "versionCounter":  1,
+    "triggerCount":  2,
+    "sourceWorkflowId":  null,
+    "tags":  [
+
+             ],
+    "versionMetadata":  {
+                            "name":  null,
+                            "description":  null
+                        }
+}
